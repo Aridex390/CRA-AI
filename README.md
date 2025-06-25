@@ -53,7 +53,7 @@ To ensure clear, traceable, and always up-to-date documentation, we use the foll
 - Always keep the documentation up to date
 
 ## 📄 License
-This project uses the MIT License. See [LICENSE](licens) for details.
+This project uses the MIT License. See [LICENSE](licens.md) for details.
 
 ## 📬 Contact
 For questions and suggestions, please use Issues or contact me on [LinkedIn](https://www.linkedin.com/in/florian-reining-67074529a?lipi=urn%3Ali%3Apage%3Ad_flagship3_profile_view_base_contact_details%3BV3JYxFwkRYCDGy8yQluYMg%3D%3D).
