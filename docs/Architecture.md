@@ -63,7 +63,40 @@ The system consists of the following main components:
 | Database  | PostgreSQL for structured data (users, projects), MongoDB for flexible data (notes, summaries) |
 | Cloud     | AWS EC2 for backend hosting, S3 for document storage, Lambda for serverless AI tasks, DynamoDB optional for real-time data |
 | DevOps    | Docker for containerization, GitHub Actions for CI/CD pipelines |
-[Container Diagram]
+```mermaid
+flowchart LR
+    %% User
+    user([Researcher / Analyst])
+
+    %% Dockerized Containers
+    webapp(["Web Application\n(React, Next.js, Node.js)\nDocker"])
+    apisrv(["API Server\n(Express/FastAPI)\nDocker"])
+    aiworker(["AI Worker\n(Python, LangChain, Celery)\nDocker"])
+    postgres(["PostgreSQL\nDocker"])
+    mongo(["MongoDB\nDocker"])
+
+    %% External Services
+    openai([OpenAI API])
+    aws(["AWS Cloud Services\n(S3, EC2, Lambda)"])
+
+    %% Connections
+    user -- "Uses via browser" --> webapp
+    webapp -- "API & WebSocket" --> apisrv
+    apisrv -- "Dispatches AI tasks" --> aiworker
+    aiworker -- "LLM requests" --> openai
+    apisrv -- "User & project data" --> postgres
+    apisrv -- "Notes & summaries" --> mongo
+    apisrv -- "Store documents / trigger Lambda" --> aws
+
+    %% Styling for modern look
+    classDef docker fill:#e6f7ff,stroke:#1890ff,stroke-width:2px;
+    classDef ext fill:#fff2e6,stroke:#fa8c16,stroke-width:2px;
+    classDef user fill:#f6ffed,stroke:#52c41a,stroke-width:2px;
+    class user user
+    class webapp,apisrv,aiworker,postgres,mongo docker
+    class openai,aws ext
+
+```
 
 ## Component Details
 ### Frontend
@@ -93,6 +126,45 @@ The system consists of the following main components:
 4. Results are stored in MongoDB and PostgreSQL.
 5. Frontend retrieves processed data and renders interactive visualizations.
 6. Users collaborate in real-time via WebSocket connections, editing and annotating documents.
+
+```mermaid
+flowchart LR
+    %% User
+    user([Researcher / Analyst])
+
+    %% Processes (Docker-Container)
+    webapp((Web Application))
+    apisrv((API Server))
+    aiworker((AI Worker))
+
+    %% Data Stores
+    postgres([PostgreSQL])
+    mongo([MongoDB])
+
+    %% External Services
+    openai([OpenAI API])
+    aws([AWS Cloud Services])
+
+    %% Data Flows
+    user -- "UI Input (Queries, Uploads)" --> webapp
+    webapp -- "REST/WebSocket API Calls" --> apisrv
+    apisrv -- "AI Task Dispatch" --> aiworker
+    aiworker -- "Summarization Request" --> openai
+    apisrv -- "User & Project Data" --> postgres
+    apisrv -- "Notes & Summaries" --> mongo
+    apisrv -- "Upload Docs / Trigger Lambda" --> aws
+
+    %% Styling for modern look
+    classDef process fill:#e6f7ff,stroke:#1890ff,stroke-width:2px;
+    classDef datastore fill:#fffbe6,stroke:#faad14,stroke-width:2px;
+    classDef ext fill:#fff2e6,stroke:#fa8c16,stroke-width:2px;
+    classDef user fill:#f6ffed,stroke:#52c41a,stroke-width:2px;
+    class user user
+    class webapp,apisrv,aiworker process
+    class postgres,mongo datastore
+    class openai,aws ext
+
+```
 
 ## Deployment & Infrastructure
 - The application is containerized using Docker.
