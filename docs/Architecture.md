@@ -7,7 +7,45 @@ The system interacts with several external actors and services:
 - **Users**: Researchers, analysts, and content creators accessing the frontend via web browsers.
 - **Third-Party APIs**: OpenAI API for language model services.
 - **Cloud Services**: AWS components for hosting, storage, and serverless AI tasks.
-[Mermaid diagram einfügen]
+```mermaid
+flowchart TB
+  %% Define styles
+  classDef person fill:#4f81bd,stroke:#1f4e79,color:#fff,stroke-width:2px,font-weight:bold
+  classDef system fill:#c6d9f1,stroke:#1f4e79,stroke-width:2px
+  classDef external fill:#f4cccc,stroke:#a61c1c,color:#a61c1c,stroke-width:2px,font-style:italic
+  classDef database fill:#d9ead3,stroke:#38761d,color:#38761d,stroke-width:2px,font-weight:bold
+
+  %% User
+  subgraph userGroup["Users"]
+    user[/"Researcher / Analyst"/]
+  end
+  class user person
+
+  %% Main System
+  subgraph mainSystem["AI-Powered Collaborative Research Assistant"]
+    app["Web Application\nCollaborative AI-driven research,\nsummarization & visualization"]
+  end
+  class app system
+
+  %% External Systems
+  subgraph externalSystems["External Systems & Services"]
+    openai["OpenAI API\nLanguage model & AI summarization"]
+    aws["AWS Cloud Services\nStorage, compute, serverless"]
+  end
+  class openai external
+  class aws external
+
+  %% Databases
+  subgraph databases["Databases"]
+    pg["PostgreSQL\nUser accounts, metadata"]
+    mongo["MongoDB\nResearch notes, AI summaries"]
+  end
+  class pg database
+  class mongo database
+
+  %% Relationships
+  user -->|Uses via web browser| app
+```
 
 ## Key Requirements and Quality Goals
 - **Real-time Collaboration**: Support multiple users editing and annotating documents simultaneously.
