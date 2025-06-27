@@ -1,13 +1,13 @@
 # Backlog
 ## MVP - Grundfunktionalitäten und Infrastruktur
 ### Frontend
-- [ ] Set up project structure with React/Nex.js
+- [x] Set up project structure with React/Nex.js
 - [ ] Implement authentication (login/logout)
 - [ ] Implement document upload functionality
 - [ ] Basic UI for document listing and viewing
 
 ### Backend
-- [ ] Scaffold API server with Express or FastAPI
+- [x] Scaffold API server with Express or FastAPI
 - [ ] Create REST endpoint for authentication, documents, and projects
 - [ ] Integrate ProstgreSQL for users/projects
 - [ ] Integrate MongoDB for notes/summaries
