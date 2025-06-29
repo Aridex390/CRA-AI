@@ -9,7 +9,7 @@ services:
     volumes:
       - ./cra-ai-backend:/app
     env_file:
-      - ./cra-ai-backend/.env
+      - ./cra-ai-backend/.env.dev
     expose:
       - "8000"
     depends_on:
@@ -25,21 +25,21 @@ services:
       - ./cra-ai-frontend:/app
       - /app/node_modules
     env_file:
-      - ./cra-ai-frontend/.env
+      - ./cra-ai-frontend/.env.dev
     expose:
       - "3000"
 
   db:
     image: postgres:16
     env_file:
-      - ./database/.env
+      - ./database/.env.dev
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
   mongo:
     image: mongo:7
     env_file:
-      - ./database/.env
+      - ./database/.env.dev
     volumes:
       - mongo_data:/data/db
 
