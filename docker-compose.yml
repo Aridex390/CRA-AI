@@ -1,67 +1,50 @@
-version: "0.1"
+version: "3.9"
 
 services:
   backend:
     build:
-      context: ./backend
+      context: ./cra-ai-backend
       dockerfile: Dockerfile
     command: uvicorn main:app --host 0.0.0.0 --port 8000
     volumes:
-      - .backend:/app
+      - ./cra-ai-backend:/app
     env_file:
-      - ./backend/.env
-    ports:
-      - "8000:8000"
+      - ./cra-ai-backend/.env
+    expose:
+      - "8000"
     depends_on:
       - db
       - mongo
       - redis
-  
+
   frontend:
     build:
-      context: ./frontend
+      context: ./cra-ai-frontend
       dockerfile: Dockerfile
     volumes:
-      - ./frontend:/app
+      - ./cra-ai-frontend:/app
       - /app/node_modules
     env_file:
-      - ./frontend/.env
-    ports:
-      - "3000:3000"
-    command: npm start
-  
+      - ./cra-ai-frontend/.env
+    expose:
+      - "3000"
+
   db:
     image: postgres:16
-    restart: always
-    eviroment:
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      POSTGRES_DB: ${POSTGRES_DB}
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-    ports:
-      - "5432:5432"
     env_file:
       - ./database/.env
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
 
   mongo:
     image: mongo:7
-    restart: always
-    enviroment:
-      MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
-      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
-    volumes:
-      - mongo_data:/data/db
-    ports:
-      - "27017:27017"
     env_file:
       - ./database/.env
+    volumes:
+      - mongo_data:/data/db
 
   redis:
-    image: redis:9
-    restart: always
-    ports:
-      - "6379:6379"
+    image: redis:7
     volumes:
       - redis_data:/data
 
