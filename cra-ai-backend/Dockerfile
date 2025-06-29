@@ -10,12 +10,12 @@ WORKDIR /app
 
 # install system dependencies (if needed)
 RUN apt-get update && apt-get install -y \
-    build-essentials \
-    && rm -rf /var/lib/apt/list/*
+    build-essential \
+    && rm -rf /var/lib/apt/lists/*
 
 # Install Python dependencies first (for better Docker caching)
-COPY requirements.toml .
-RUN pip install --no-cache-dir --upgrade -r requirements.toml
+COPY requirements.txt .
+RUN pip install --no-cache-dir --upgrade -r requirements.txt
 
 # Copy application code
 COPY ./app ./app
