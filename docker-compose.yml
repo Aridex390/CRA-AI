@@ -1,5 +1,3 @@
-version: "3.9"
-
 services:
   backend:
     build:
@@ -32,14 +30,14 @@ services:
   db:
     image: postgres:16
     env_file:
-      - ./database/.env.dev
+      - ./cra-ai-database/.env.dev
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
   mongo:
     image: mongo:7
     env_file:
-      - ./database/.env.dev
+      - ./cra-ai-database/.env.dev
     volumes:
       - mongo_data:/data/db
 
