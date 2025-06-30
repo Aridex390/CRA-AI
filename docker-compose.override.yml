@@ -1,15 +1,20 @@
 services:
   backend:
+    working_dir: /app
     ports:
       - "8000:8000"
-    command: uvicorn main:app --host 0.0.0.0 --port 8000 --reload
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
     volumes:
       - ./cra-ai-backend:/app  # Mount source code for live reload
 
   frontend:
+    image: node:20-alpine
     ports:
       - "3000:3000"
-    command: npm run dev
+    command: sh -c "npm install && npm start"
+    working_dir: /app
     volumes:
       - ./cra-ai-frontend:/app
       - /app/node_modules
+    environment:
+      - NODE_ENV=development
