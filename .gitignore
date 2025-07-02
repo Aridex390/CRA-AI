@@ -134,3 +134,7 @@ dist
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
+
+#postgres db
+postgresql_init.sql
+mongo_init.js
