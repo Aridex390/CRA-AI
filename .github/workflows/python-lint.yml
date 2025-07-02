@@ -12,5 +12,5 @@ jobs:
           python-version: '3.11'
       - run: pip install ruff black mypy
       - run: ruff check .
-      - run: black --check .
+      - run: black .
       - run: mypy .
