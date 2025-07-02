@@ -6,3 +6,6 @@ psycopg2-binary
 motor
 redis
 python-dotenv
+ruff
+black
+mypy
