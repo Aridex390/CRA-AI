@@ -21,7 +21,6 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node-
       - name: Install dependencies
-        work
         run: npm ci
       - name: Run ESLint
         run: npm run lint
