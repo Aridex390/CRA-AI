@@ -1,4 +1,3 @@
-text
 name: Frontend Format Check
 
 on: [push, pull_request]
