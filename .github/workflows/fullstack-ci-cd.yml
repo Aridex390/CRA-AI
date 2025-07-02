@@ -1,0 +1,112 @@
+name: Full-Stack CI/CD
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+
+jobs:
+  backend:
+    name: Backend CI
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./cra-ai-backend
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Cache Poetry dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cache/pypoetry
+            ~/.cache/pip
+          key: ${{ runner.os }}-poetry-${{ hashFiles('backend/poetry.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-poetry-
+
+      - name: Install Poetry
+        run: pip install poetry
+
+      - name: Install dependencies
+        run: poetry install
+
+      - name: Run Pytest with coverage
+        run: poetry run pytest --cov=.
+
+      - name: Run Bandit (security scan)
+        run: poetry run bandit -r .
+
+      - name: Run Safety (vulnerability scan)
+        run: poetry run safety check
+
+      - name: Build Docker image
+        run: docker build -t <your-dockerhub-username>/my-backend:${{ github.sha }} .
+
+      - name: Scan Docker image with Trivy
+        uses: aquasecurity/trivy-action@v0.16.0
+        with:
+          image-ref: <your-dockerhub-username>/my-backend:${{ github.sha }}
+
+      - name: Log in to Docker Hub
+        if: github.ref == 'refs/heads/main'
+        run: echo ${{ secrets.DOCKERHUB_TOKEN }} | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
+
+      - name: Push Docker image to Docker Hub
+        if: github.ref == 'refs/heads/main'
+        run: docker push <your-dockerhub-username>/my-backend:${{ github.sha }}
+
+  frontend:
+    name: Frontend CI
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./cra-ai-frontend
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run Vitest unit tests
+        run: npm run test
+
+      - name: Run ESLint
+        run: npm run lint
+
+      - name: Run Prettier check
+        run: npm run format:check
+
+      - name: Build Docker image
+        run: docker build -t <your-dockerhub-username>/my-frontend:${{ github.sha }} .
+
+      - name: Scan Docker image with Trivy
+        uses: aquasecurity/trivy-action@v0.16.0
+        with:
+          image-ref: <your-dockerhub-username>/my-frontend:${{ github.sha }}
+
+      - name: Log in to Docker Hub
+        if: github.ref == 'refs/heads/main'
+        run: echo ${{ secrets.DOCKERHUB_TOKEN }} | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
+
+      - name: Push Docker image to Docker Hub
+        if: github.ref == 'refs/heads/main'
+        run: docker push <your-dockerhub-username>/my-frontend:${{ github.sha }}
+
+      - name: Run Playwright E2E tests
+        run: npm run test:e2e
+
+      - name: Deploy to Staging
+        if: github.ref == 'refs/heads/main'
+        run: bash ../../scripts/deploy_staging.sh
