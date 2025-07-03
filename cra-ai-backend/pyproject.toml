@@ -6,3 +6,12 @@ line-length = 88
 
 [tool.ruff.lint]
 select = ["E", "F", "W", "I"]
+
+[tool.poetry]
+name = "your-project-name"
+version = "0.1.0"
+description = ""
+authors = ["Your Name <your@email.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.11"
