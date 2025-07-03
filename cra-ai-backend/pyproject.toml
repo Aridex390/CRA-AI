@@ -8,10 +8,10 @@ line-length = 88
 select = ["E", "F", "W", "I"]
 
 [tool.poetry]
-name = "your-project-name"
-version = "0.1.0"
+name = ""
+version = "0.1.0-SNAPSHOT"
 description = ""
-authors = ["Your Name <your@email.com>"]
+authors = ["Aridex"]
 
 [tool.poetry.dependencies]
 python = "^3.11"
