@@ -12,6 +12,7 @@ name = "CRA-AI"
 version = "0.1.0"
 description = ""
 authors = ["Aridex"]
+packages = [{ include = "main.py", from = "app" }]
 
 [tool.poetry.dependencies]
 python = "^3.11"
