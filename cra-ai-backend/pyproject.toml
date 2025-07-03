@@ -16,3 +16,8 @@ packages = [{ include = "main.py", from = "app" }]
 
 [tool.poetry.dependencies]
 python = "^3.11"
+
+[tool.poetry.dev-dependencies]
+pytest = "^8.2.0"
+pytest-cov = "^5.0.0"
+# ... weitere Entwicklungs-Abhängigkeiten ...
