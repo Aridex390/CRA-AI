@@ -8,7 +8,7 @@ line-length = 88
 select = ["E", "F", "W", "I"]
 
 [tool.poetry]
-name = ""
+name = "CRA-AI"
 version = "0.1.0-SNAPSHOT"
 description = ""
 authors = ["Aridex"]
