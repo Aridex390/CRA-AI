@@ -2,7 +2,7 @@ name: Full-Stack CI/CD
 
 on:
   push:
-    branches: [main, develop]
+    branches: [main, master_dev]
   pull_request:
 
 jobs:
@@ -48,10 +48,17 @@ jobs:
       - name: Build Docker image
         run: docker build -t <your-dockerhub-username>/my-backend:${{ github.sha }} .
 
-      - name: Scan Docker image with Trivy
-        uses: aquasecurity/trivy-action@0.31.0
+      - name: Run Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@v0.31.0
         with:
-          image-ref: <your-dockerhub-username>/my-backend:${{ github.sha }}
+          image-ref: <image>
+          format: 'sarif'
+          output: 'trivy-results.sarif'
+          
+      - name: Upload Trivy scan results to GitHub Security tab
+        uses: github/codeql-action/upload-sarif@v1
+        with:
+          sarif_file: 'trivy-results.sarif'
 
       - name: Log in to Docker Hub
         if: github.ref == 'refs/heads/main'
@@ -103,6 +110,9 @@ jobs:
       - name: Push Docker image to Docker Hub
         if: github.ref == 'refs/heads/main'
         run: docker push <your-dockerhub-username>/my-frontend:${{ github.sha }}
+
+      - name: Install Playwright Browsers
+        run: npx playwright install --with-deps
 
       - name: Run Playwright E2E tests
         run: npm run test:e2e
