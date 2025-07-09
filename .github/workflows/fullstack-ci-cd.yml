@@ -43,10 +43,10 @@ jobs:
         run: poetry run bandit -r /app.
 
       - name: Run Safety (vulnerability scan)
-        run: poetry run safety check
+        run: poetry run safety scan
 
       - name: Build Docker image
-        run: docker build -t <your-dockerhub-username>/my-backend:${{ github.sha }} .
+        run: docker build -t ${{ secrets.REGISTRY_USER }}/my-backend:${{ github.sha }} .
 
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@0.31.0
@@ -62,7 +62,7 @@ jobs:
 
       - name: Log in to Docker Hub
         if: github.ref == 'refs/heads/main'
-        run: echo ${{ secrets.DOCKERHUB_TOKEN }} | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
+        run: echo ${{ secrets.DOCKERHUB_TOKEN }} | docker login -u ${{ secrets.REGISTRY_USER }} --password-stdin
 
       - name: Push Docker image to Docker Hub
         if: github.ref == 'refs/heads/main'
