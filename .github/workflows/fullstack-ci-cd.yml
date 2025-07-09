@@ -51,7 +51,7 @@ jobs:
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@0.31.0
         with:
-          image-ref: my-backend:${{ github.sha }}
+          image-ref: ${{ secrets.REGISTRY_USER }}/my-backend:${{ github.sha }}
           format: 'sarif'
           output: 'trivy-results.sarif'
           
@@ -66,7 +66,7 @@ jobs:
 
       - name: Push Docker image to Docker Hub
         if: github.ref == 'refs/heads/main'
-        run: docker push <your-dockerhub-username>/my-backend:${{ github.sha }}
+        run: docker push ${{ REGISTRY_USER }}/my-backend:${{ github.sha }}
 
   frontend:
     name: Frontend CI
