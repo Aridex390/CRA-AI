@@ -43,7 +43,7 @@ jobs:
         run: poetry run bandit -r /app.
 
       - name: Run Safety (vulnerability scan)
-        run: poetry run safety scan
+        run: poetry run safety check
 
       - name: Build Docker image
         run: docker build -t ${{ secrets.REGISTRY_USER }}/my-backend:${{ github.sha }} .
