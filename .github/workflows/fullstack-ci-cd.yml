@@ -66,7 +66,7 @@ jobs:
 
       - name: Push Docker image to Docker Hub
         if: github.ref == 'refs/heads/main'
-        run: docker push ${{ REGISTRY_USER }}/my-backend:${{ github.sha }}
+        run: docker push ${{ secrets.REGISTRY_USER }}/my-backend:${{ github.sha }}
 
   frontend:
     name: Frontend CI
