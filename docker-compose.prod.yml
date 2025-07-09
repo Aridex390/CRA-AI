@@ -1,21 +1,19 @@
 services:
   backend:
+    image: ${BACKEND_IMAGE}
     ports:
       - "8000:8000"
-    command: uvicorn app.main:app --host 0.0.0.0 --port 8000
-    volumes: []  # No source code mounting in prod
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000"
+    volumes: []
 
   frontend:
+    image: ${FRONTEND_IMAGE}
     ports:
       - "80:80"
-    command: npm run build
-    volumes: []  # No source code mounting in prod
+    volumes: []
 
   nginx:
     image: nginx:1.25-alpine
-    build:
-      context: .
-      dockerfile: Dockerfile
     ports:
       - "80:80"
     volumes:

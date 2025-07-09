@@ -1,18 +1,22 @@
 #!/bin/bash
 set -e
 
-# Build image
-docker compose -p cra-ai-prod -f docker-compose.yml -f docker-compose.prod.yml up build
+# Setze deinen Docker Hub Usernamen und das Tag (z.B. Commit SHA oder latest)
+DOCKERHUB_USERNAME=""
+IMAGE_TAG="${1:-latest}"  # Übergib das Tag als Argument oder nutze 'latest'
 
-# Start the docker image
-docker compose -p cra-ai-prod -f docker-compose.yml -f docker-compose.prod.yml up
+echo "Setze Umgebungsvariablen für Compose..."
+export BACKEND_IMAGE="$DOCKERHUB_USERNAME/my-backend:$IMAGE_TAG"
+export FRONTEND_IMAGE="$DOCKERHUB_USERNAME/my-frontend:$IMAGE_TAG"
 
-echo "Waiting for databases to be ready..."
-sleep 20  # Adjust as needed for DB initialization
+echo "Pull latest images..."
+docker compose -f docker-compose.yml -f docker-compose.prod.yml pull
+
+echo "Recreate containers with new images..."
+docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d
+
+echo "Clean up unused Docker resources..."
+docker image prune -af
+docker container prune -f
 
 echo "Deployment complete!"
-echo "Frontend: http://localhost:3000"
-echo "Backend:  http://localhost:8000"
-echo "Postgres: http://localhost:5432"
-echo "PgAdmin: http://localhost:5050"
-echo "MongoDB:  http://localhost:27017"
