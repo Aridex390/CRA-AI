@@ -66,7 +66,7 @@ jobs:
 
       - name: Log in to Docker Hub
         if: github.ref == 'refs/heads/main'
-        run: echo ${{ secrets.DOCKERHUB_TOKEN }} | docker login -u ${{ secrets.REGISTRY_USER }} --password-stdin
+        run: echo ${{ secrets.DOCKERHUB_TOKEN }} | docker login -u aridex390 --password-stdin
 
       - name: Push Docker image to Docker Hub
         if: github.ref == 'refs/heads/main'
